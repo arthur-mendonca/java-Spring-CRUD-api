@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exceptions.UnsupportedMathOperationExcepetion;
+import com.example.demo.exceptions.ResourceNotFoundException;
 
 @RestController
 public class MathControllerSquare {
@@ -15,7 +15,7 @@ public class MathControllerSquare {
 			@PathVariable(value = "numberOne") String numberOne
 			) throws Exception {
 		if(!MathUtils.isNumeric(numberOne)) {
-			throw new UnsupportedMathOperationExcepetion("Please set a numeric value");
+			throw new ResourceNotFoundException("Please set a numeric value");
 			}
 		
 		return Math.sqrt(MathUtils.convertToDouble(numberOne));

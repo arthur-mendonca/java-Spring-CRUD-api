@@ -24,7 +24,7 @@ public class PersonController {
 	@RequestMapping(value = "/{id}", 
 			method=RequestMethod.GET, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person findById(@PathVariable(value = "id") String id) throws Exception {
+	public Person findById(@PathVariable(value = "id") Long id) throws Exception {
 		return service.findById(id);
 	}
 	
@@ -39,16 +39,18 @@ public class PersonController {
 	public Person create(@RequestBody Person person) throws Exception {
 		return service.create(person);
 	}
-	@RequestMapping(method=RequestMethod.PUT, 
+	@RequestMapping(value = "/{id}",
+			method=RequestMethod.PUT, 
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person update(@RequestBody Person person) throws Exception {
+	public Person update(@PathVariable(value="id") Long id, @RequestBody Person person) throws Exception {
+		person.setId(id);
 		return service.update(person);
 	}
 	
 	@RequestMapping(value = "/{id}", 
 			method=RequestMethod.DELETE) 
-	public void delete(@PathVariable(value = "id") String id) throws Exception {
+	public void delete(@PathVariable(value = "id") Long id) throws Exception {
 		service.delete(id);
 	}
 		

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exceptions.UnsupportedMathOperationExcepetion;
+import com.example.demo.exceptions.ResourceNotFoundException;
 
 @RestController
 public class MathControllerExponencial {
@@ -16,7 +16,7 @@ public class MathControllerExponencial {
 			@PathVariable(value = "numberTwo") String numberTwo
 			) throws Exception {
 		if(!MathUtils.isNumeric(numberOne) || !MathUtils.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationExcepetion("Please set a numeric value");
+			throw new ResourceNotFoundException("Please set a numeric value");
 			}
 		Double expResult = Math.pow(Double.parseDouble(numberOne), Double.parseDouble(numberTwo));
 		

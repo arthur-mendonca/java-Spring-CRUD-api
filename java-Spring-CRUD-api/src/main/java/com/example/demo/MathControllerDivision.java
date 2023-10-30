@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exceptions.UnsupportedMathOperationExcepetion;
+import com.example.demo.exceptions.ResourceNotFoundException;
 
 
 
@@ -24,7 +24,7 @@ public class MathControllerDivision {
 			@PathVariable(value = "numberTwo") String numberTwo
 			) throws Exception {
 		if(!MathUtils.isNumeric(numberOne) || !MathUtils.isNumeric(numberTwo)) {
-			throw new UnsupportedMathOperationExcepetion("Please set a numeric value");
+			throw new ResourceNotFoundException("Please set a numeric value");
 			}
 		return MathUtils.convertToDouble(numberOne) / MathUtils.convertToDouble(numberTwo);
 	}
