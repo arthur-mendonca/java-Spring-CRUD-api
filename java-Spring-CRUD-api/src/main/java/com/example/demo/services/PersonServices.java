@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.PersonController;
 import com.example.demo.data.vo.v1.PersonVO;
 import com.example.demo.data.vo.v2.PersonVOv2;
 import com.example.demo.exceptions.ResourceNotFoundException;
@@ -46,20 +49,22 @@ public class PersonServices {
 		return vo;
 	}
 	
-	public PersonVO findById(Long id) {
+	public PersonVO findById(Long id) throws Exception {
 		
 		logger.info("Finding a person");		
 
 		var entity =  repository.findById(id)
 			.orElseThrow(() -> new ResourceNotFoundException("No records were found for this ID."));
 		
-		return ModelMapperUtil.parseObject(entity, PersonVO.class);
+		PersonVO vo = ModelMapperUtil.parseObject(entity, PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return vo;
 	}
 	
 	public PersonVO update(PersonVO person) {
 		logger.info("Updating a person");
 		
-		Person entity = repository.findById(person.getId())
+		Person entity = repository.findById(person.getKey())
 		.orElseThrow(() -> new ResourceNotFoundException("No records were found for this ID."));
 	
 		entity.setFirstName(person.getFirstName());
