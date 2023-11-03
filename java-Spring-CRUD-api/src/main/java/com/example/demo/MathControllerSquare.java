@@ -1,18 +1,15 @@
 package com.example.demo;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exceptions.ResourceNotFoundException;
 
 @RestController
 public class MathControllerSquare {
-	@RequestMapping(value="/sqr/{numberOne}/", 
-			method=RequestMethod.GET)
+	@GetMapping("/sqr/{numberOne}/")
 	public Double sqr(
-			@PathVariable(value = "numberOne") String numberOne
+			@PathVariable String numberOne
 			) throws Exception {
 		if(!MathUtils.isNumeric(numberOne)) {
 			throw new ResourceNotFoundException("Please set a numeric value");

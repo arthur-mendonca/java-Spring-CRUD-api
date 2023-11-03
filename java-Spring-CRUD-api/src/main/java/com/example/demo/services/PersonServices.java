@@ -30,14 +30,23 @@ public class PersonServices {
 	
 	public List<PersonVO> findAll() {
 		logger.info("Finding all people");
-		return ModelMapperUtil.parseListObjects(repository.findAll(), PersonVO.class); 
+		var persons = ModelMapperUtil.parseListObjects(repository.findAll(), PersonVO.class);
+		persons.stream().forEach( p -> {
+			try {
+				p.add(linkTo(methodOn(PersonController.class).findById(p.getId())).withSelfRel());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return persons;
 	}
 	
-	public PersonVO create(PersonVO person) {
+	public PersonVO create(PersonVO person) throws Exception {
 		logger.info("Creating a person");
 		
 		var entity = ModelMapperUtil.parseObject(person, Person.class);
 		var vo =  ModelMapperUtil.parseObject(repository.save(entity), PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getId())).withSelfRel());
 		return vo;
 	}
 	
@@ -61,10 +70,10 @@ public class PersonServices {
 		return vo;
 	}
 	
-	public PersonVO update(PersonVO person) {
+	public PersonVO update(PersonVO person) throws Exception {
 		logger.info("Updating a person");
 		
-		Person entity = repository.findById(person.getKey())
+		Person entity = repository.findById(person.getId())
 		.orElseThrow(() -> new ResourceNotFoundException("No records were found for this ID."));
 	
 		entity.setFirstName(person.getFirstName());
@@ -73,6 +82,7 @@ public class PersonServices {
 		entity.setGender(person.getGender());
 		
 		var vo =  ModelMapperUtil.parseObject(repository.save(entity), PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getId())).withSelfRel());
 		return vo;
 				
 	} 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import org.springframework.hateoas.RepresentationModel;
-import org.springframework.web.bind.annotation.Mapping;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -13,15 +12,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "person")
+
 @JsonPropertyOrder({"id",  "lastName", "firstName",  "address", "gender"})
-public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
+public class PersonVO extends RepresentationModel <PersonVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	private Long key; 
+	
+	@JsonProperty("id")
+	private Long id; 
 	
 	@JsonProperty("first_name")
 	private String firstName;
@@ -36,12 +35,12 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 	
 	public PersonVO() {}
 	
-	public Long getKey() {
-		return key;
+	public Long getId() {
+		return id;
 	}
 	
-	public void setKey(Long key) {
-		this.key = key;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -69,8 +68,8 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 	}
 
 
-	public void setAddress(String adress) {
-		this.address = adress;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 
@@ -88,7 +87,7 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(address, firstName, gender, key, lastName);
+		result = prime * result + Objects.hash(address, firstName, gender, id, lastName);
 		return result;
 	}
 
@@ -102,7 +101,7 @@ public class PersonVO extends RepresentationModel<PersonVO> implements Serializa
 			return false;
 		PersonVO other = (PersonVO) obj;
 		return Objects.equals(address, other.address) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(gender, other.gender) && Objects.equals(key, other.key)
+				&& Objects.equals(gender, other.gender) && Objects.equals(id, other.id)
 				&& Objects.equals(lastName, other.lastName);
 	}
 

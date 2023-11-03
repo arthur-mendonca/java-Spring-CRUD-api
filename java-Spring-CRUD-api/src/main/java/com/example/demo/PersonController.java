@@ -26,12 +26,12 @@ public class PersonController {
 	private PersonServices service;
 	
 	
-	@GetMapping(value = "/{key}", 
+	@GetMapping(value = "/{id}", 
 			produces = {MediaType.APPLICATION_JSON, 
 						MediaType.APPLICATION_XML,
 						MediaType.APPLICATION_YML})
-	public PersonVO findById(@PathVariable(value = "key") Long key) throws Exception {
-		return service.findById(key);
+	public PersonVO findById(@PathVariable Long id) throws Exception {
+		return service.findById(id);
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON, 
@@ -51,6 +51,7 @@ public class PersonController {
 	public PersonVO create(@RequestBody PersonVO person) throws Exception {
 		return service.create(person);
 	}
+	
 	@PostMapping(value="/v2", consumes = {
 									MediaType.APPLICATION_JSON, 
 									MediaType.APPLICATION_XML,
@@ -62,7 +63,8 @@ public class PersonController {
 	public PersonVOv2 createV2(@RequestBody PersonVOv2 person) throws Exception {
 		return service.createV2(person);
 	}
-	@PutMapping(value = "/{key}",
+	
+	@PutMapping(value = "/{id}",
 			consumes = {
 					MediaType.APPLICATION_JSON, 
 					MediaType.APPLICATION_XML,
@@ -71,14 +73,14 @@ public class PersonController {
 					MediaType.APPLICATION_JSON, 
 					MediaType.APPLICATION_XML,
 					MediaType.APPLICATION_YML})
-	public PersonVO update(@PathVariable(value="key") Long key, @RequestBody PersonVO person) throws Exception {
-		person.setKey(key);
+	public PersonVO update(@PathVariable Long id, @RequestBody PersonVO person) throws Exception {
+		person.setId(id);
 		return service.update(person);
 	}
 	
-	@DeleteMapping(value = "/{key}")
-	public ResponseEntity<?> delete(@PathVariable(value = "key") Long key) throws Exception {
-		service.delete(key);
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) throws Exception {
+		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 		
