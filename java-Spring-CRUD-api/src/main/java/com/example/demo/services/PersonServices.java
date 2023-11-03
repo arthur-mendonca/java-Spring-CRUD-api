@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.PersonController;
 import com.example.demo.data.vo.v1.PersonVO;
 import com.example.demo.data.vo.v2.PersonVOv2;
+import com.example.demo.exceptions.RequiredObjectIsNullException;
 import com.example.demo.exceptions.ResourceNotFoundException;
 import com.example.demo.mapper.ModelMapperUtil;
 import com.example.demo.mapper.custom.PersonMapper;
@@ -44,6 +45,8 @@ public class PersonServices {
 	public PersonVO create(PersonVO person) throws Exception {
 		logger.info("Creating a person");
 		
+		if(person == null) throw new RequiredObjectIsNullException();
+		
 		var entity = ModelMapperUtil.parseObject(person, Person.class);
 		var vo =  ModelMapperUtil.parseObject(repository.save(entity), PersonVO.class);
 		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getId())).withSelfRel());
@@ -71,6 +74,8 @@ public class PersonServices {
 	}
 	
 	public PersonVO update(PersonVO person) throws Exception {
+		if(person == null) throw new RequiredObjectIsNullException();
+		
 		logger.info("Updating a person");
 		
 		Person entity = repository.findById(person.getId())
